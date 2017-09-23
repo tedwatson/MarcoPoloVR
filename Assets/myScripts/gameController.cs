@@ -11,6 +11,11 @@ public class gameController : MonoBehaviour {
     public GameObject head;
     public SteamVR_PlayArea playArea;
 
+    public void FoundPolo()
+    {
+        SpawnPolo();
+    }
+
     private void Start()
     {
         // Make sure our minPlayerDistance isn't set impossibly low
@@ -20,9 +25,15 @@ public class gameController : MonoBehaviour {
             minPlayerDistance = maxPossibleSpawnDistance;
         }
 
-        StartCoroutine(SpawnPolos());
+        // Put a sphere collider on player's head
+        GameObject.Find("Camera (eye)").AddComponent<SphereCollider>().radius = .2f;
+
+
+        SpawnPolo();
+        //StartCoroutine(SpawnPolos());
     }
 
+    /*
     IEnumerator SpawnPolos()
     {
         while (true)
@@ -31,6 +42,7 @@ public class gameController : MonoBehaviour {
             SpawnPolo();
         }
     }
+    */
 
     private void SpawnPolo()
     {
@@ -40,7 +52,7 @@ public class gameController : MonoBehaviour {
         {
             // Pick a random eye-level position within our play area, but not too close to the edges
             spawnPosition = new Vector3(Random.Range(playArea.vertices[1].x + wallBuffer, playArea.vertices[0].x - wallBuffer),
-                                                head.transform.position.y,
+                                                1.5f,
                                                 Random.Range(playArea.vertices[1].z + wallBuffer, playArea.vertices[2].z - wallBuffer));
             // Make sure it's not too close to the player
             if (DistanceIgnoringVertical(spawnPosition, head.transform.position) > minPlayerDistance)
