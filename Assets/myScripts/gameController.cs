@@ -50,8 +50,6 @@ public class gameController : MonoBehaviour {
 
     IEnumerator Introduction()
     {
-        yield return new WaitForSeconds(15);
-
         // Play Introduction Audio
         audio.clip = introClip;
         audio.Play();
