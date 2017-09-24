@@ -13,7 +13,6 @@ public class poloController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        print("trigger!");
         gc.FoundPolo();
         Destroy(this.gameObject);
     }

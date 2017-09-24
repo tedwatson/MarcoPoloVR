@@ -10,17 +10,29 @@ public class gameController : MonoBehaviour {
     public GameObject polo;
     public GameObject head;
     public SteamVR_PlayArea playArea;
+    public AudioClip introClip;
+    public AudioClip congratsClip;
 
     private speechRecognition recognition;
+    private AudioSource audio;
 
     public void FoundPolo()
     {
+        // Spawn a new Polo
         SpawnPolo();
+        // Play our congratulations clip
+        audio.Play();
+    }
+
+    public void InturruptAudio() // For if play begins calling "Marco" during congratulations
+    {
+        audio.Stop();
     }
 
     private void Start()
     {
         recognition = GetComponent<speechRecognition>();
+        audio = GetComponent<AudioSource>();
 
         // Make sure our minPlayerDistance isn't set impossibly low
         float maxPossibleSpawnDistance = MaxPossibleSpawnDistance();
@@ -32,21 +44,23 @@ public class gameController : MonoBehaviour {
         // Put a sphere collider on player's head
         GameObject.Find("Camera (eye)").AddComponent<SphereCollider>().radius = .2f;
 
-
-        SpawnPolo();
-        //StartCoroutine(SpawnPolos());
+        // Begin Introduction
+        StartCoroutine(Introduction());
     }
 
-    /*
-    IEnumerator SpawnPolos()
+    IEnumerator Introduction()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(.1f);
-            SpawnPolo();
-        }
+        yield return new WaitForSeconds(15);
+
+        // Play Introduction Audio
+        audio.clip = introClip;
+        audio.Play();
+        yield return new WaitForSeconds(audio.clip.length); // Wait for audio to finish
+        audio.clip = congratsClip; // Switch audio source to congratulations audio, which will be used from now on
+
+        // Spawn our first polo to begin the game
+        SpawnPolo();
     }
-    */
 
     private void SpawnPolo()
     {
