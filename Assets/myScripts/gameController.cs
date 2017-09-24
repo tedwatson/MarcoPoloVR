@@ -11,6 +11,8 @@ public class gameController : MonoBehaviour {
     public GameObject head;
     public SteamVR_PlayArea playArea;
 
+    private speechRecognition recognition;
+
     public void FoundPolo()
     {
         SpawnPolo();
@@ -18,6 +20,8 @@ public class gameController : MonoBehaviour {
 
     private void Start()
     {
+        recognition = GetComponent<speechRecognition>();
+
         // Make sure our minPlayerDistance isn't set impossibly low
         float maxPossibleSpawnDistance = MaxPossibleSpawnDistance();
         if (minPlayerDistance > maxPossibleSpawnDistance)
@@ -60,7 +64,10 @@ public class gameController : MonoBehaviour {
                 foundGoodPosition = true;
             }
         }
-        Instantiate(polo, spawnPosition, Quaternion.identity);
+        GameObject ourPolo = Instantiate(polo, spawnPosition, Quaternion.identity);
+
+        // Give our speech recognition script the new polo's audiosource component
+        recognition.audio = ourPolo.GetComponent<AudioSource>();
     }
     
 

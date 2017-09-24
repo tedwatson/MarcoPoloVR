@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 public class speechRecognition : MonoBehaviour {
 
+    public AudioSource audio;
+
     KeywordRecognizer keywordRecognizer;
     Dictionary<string, System.Action> keywords = new Dictionary<string, System.Action>();
 
@@ -37,6 +39,7 @@ public class speechRecognition : MonoBehaviour {
     void MarcoCalled()
     {
         print("You just said MARCO");
+        audio.Play();
     }
 
 }
